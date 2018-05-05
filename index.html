@@ -19,8 +19,14 @@
             <div id="treeview12" class=""></div>
         </div>
         <div class="col-sm-4">
-            <h2>Events</h2>
-            <div id="selectable-output"></div>
+            <h3>Tópico</h3>
+            <div>
+                <textarea name="html_topico" id="html_topico" cols="80" rows="3"></textarea>
+            </div>
+            <h3>Informação</h3>
+            <div >
+                <textarea name="html_informacao" id="html_informacao" cols="80" rows="3"></textarea>
+            </div>
         </div>
     </div>
     <br/>
@@ -31,41 +37,15 @@
 
     $(function () {
 
-        var json =
-            '[' +
-                '{' +
-                    '"text": "Parent 1",' +
-                    '"nodes": [' +
-                        '{' +
-                            '"text": "Child 1",' +
-                            '"nodes": [' +
-                                '{' +
-                                    '"text": "Grandchild 1"' +
-                                '},' +
-                                '{' +
-                                    '"text": "Grandchild 2"' +
-                                '}' +
-                            ']' +
-                        '},' +
-                        '{' +
-                        '"text": "Child 2"' +
-                        '}' +
-                    ']' +
-                '},' +
-                '{' +
-                    '"text": "Parent 2"' +
-                '},' +
-                '{' +
-                    '"text": "Parent 3"' +
-                '},' +
-                '{' +
-                    '"text": "Parent 4"' +
-                '},' +
-                '{' +
-                    '"text": "Parent 5"' +
-                '}' +
-            ']';
 
+        function mostraDados(node){
+            $('#html_topico').html( node.text );
+            $.get("http://localhost:8080/api/informacoes/topico/"+node.id, function (data) {
+                $('#html_informacao').html( data["data"][0].descricao );
+            });
+        }
+
+        var json;
 
         $.get("http://localhost:8080/api/categorias", function (data) {
             montaTreeview(data);
@@ -74,14 +54,13 @@
             var $tree = $('#treeview12').treeview({
                 data: json,
                 onNodeSelected: function(event, node) {
-                    $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
+                    mostraDados(node);
                 }
             });
         })
         .fail(function () {
             alert("error");
         });
-
 
         function montaTreeview(data) {
             json = '[';
@@ -108,7 +87,8 @@
                     var i;
                     for (i = 0; i < data.length; i++) {
 
-                        json += '"text": "' + data[i].nome + '"';
+                        json += '"text": "' + data[i].nome + '",';
+                        json += '"id": "' + data[i].id + '"';
 
                         montaNodes(data[i].itens);
                         montaNodes(data[i].topicos);
