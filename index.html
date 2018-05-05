@@ -3,102 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <title>Base de Conhecimento</title>
-    
+
     <link rel="stylesheet" href="assets/bootstrap-3.3.7-dist/css/bootstrap.css">
 
 </head>
-  <body>
-    <div class="container">
-        <h1>Bootstrap Tree View</h1>
-      <br>
-      
-      <div class="row">
+<body>
+<div class="container">
+    <h1>Categorias</h1>
+    <br>
+
+    <div class="row">
         <hr>
-        <h2>Data</h2>
+
         <div class="col-sm-4">
-          <h2>JSON Data</h2>
-          <div id="treeview12" class=""></div>
+            <div id="treeview12" class=""></div>
         </div>
-        
-      </div>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
+        <div class="col-sm-4">
+            <h2>Events</h2>
+            <div id="selectable-output"></div>
+        </div>
     </div>
-    <script src="./assets/js/jquery-3.3.1.min.js"></script>
-    <script src="./assets/js/bootstrap-treeview.js"></script>
-    <script type="text/javascript">
+    <br/>
+</div>
+<script src="./assets/js/jquery-3.3.1.min.js"></script>
+<script src="./assets/js/bootstrap-treeview.js"></script>
+<script type="text/javascript">
 
-      $(function() {
+    $(function () {
 
-        
-        var json = '[' +
-          '{' +
-            '"text": "Parent 1",' +
-            '"nodes": [' +
-              '{' +
-                '"text": "Child 1",' +
-                '"nodes": [' +
-                  '{' +
-                    '"text": "Grandchild 1"' +
-                  '},' +
-                  '{' +
-                    '"text": "Grandchild 2"' +
-                  '}' +
-                ']' +
-              '},' +
-              '{' +
-                '"text": "Child 2"' +
-              '}' +
-            ']' +
-          '},' +
-          '{' +
-            '"text": "Parent 2"' +
-          '},' +
-          '{' +
-            '"text": "Parent 3"' +
-          '},' +
-          '{' +
-            '"text": "Parent 4"' +
-          '},' +
-          '{' +
-            '"text": "Parent 5"' +
-          '}' +
-        ']';
+        var json =
+            '[' +
+                '{' +
+                    '"text": "Parent 1",' +
+                    '"nodes": [' +
+                        '{' +
+                            '"text": "Child 1",' +
+                            '"nodes": [' +
+                                '{' +
+                                    '"text": "Grandchild 1"' +
+                                '},' +
+                                '{' +
+                                    '"text": "Grandchild 2"' +
+                                '}' +
+                            ']' +
+                        '},' +
+                        '{' +
+                        '"text": "Child 2"' +
+                        '}' +
+                    ']' +
+                '},' +
+                '{' +
+                    '"text": "Parent 2"' +
+                '},' +
+                '{' +
+                    '"text": "Parent 3"' +
+                '},' +
+                '{' +
+                    '"text": "Parent 4"' +
+                '},' +
+                '{' +
+                    '"text": "Parent 5"' +
+                '}' +
+            ']';
 
-        
-      
-        var jqxhr = 
-          $.get( "http://localhost:8080/api/categorias", function(data) {
+
+        $.get("http://localhost:8080/api/categorias", function (data) {
             montaTreeview(data);
-          })
-          .done(function() {
+        })
+        .done(function () {
             var $tree = $('#treeview12').treeview({
-              data: json
+                data: json,
+                onNodeSelected: function(event, node) {
+                    $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
+                }
             });
-          })
-          .fail(function() {
-            alert( "error" );
-          });
+        })
+        .fail(function () {
+            alert("error");
+        });
+
 
         function montaTreeview(data) {
-          json = '[{';
-          var i;
-          for (i = 0; i < data["data"].length; i++) { 
-            json += '"text": "'+data["data"][i].nome + '"'
-            if (i != data["data"].length -1){
-              json += ',';
+            json = '[';
+            var i;
+            for (i = 0; i < data["data"].length; i++) {
+                json += '{"text": "' + data["data"][i].nome + '"';
+
+                montaNodes(data["data"][i].itens);
+
+                json += '}';
+                if (i != data["data"].length - 1) {
+                    json += ',';
+                }
             }
-          }
-          json += '}]';
+            json += ']';
         };
 
+        function montaNodes(data) {
+            if (data) {
+                if (data.length != 0) {
 
-      });
+                    json += ',"nodes": [{';
+
+                    var i;
+                    for (i = 0; i < data.length; i++) {
+
+                        json += '"text": "' + data[i].nome + '"';
+
+                        montaNodes(data[i].itens);
+                        montaNodes(data[i].topicos);
+                        if (i != data.length - 1) {
+                            json += '},{';
+                        }
+                    }
+
+                    json += '}]';
+                }
+            }
+        }
+    });
 
 
-
-    </script>
-  </body>
+</script>
+</body>
 </html>
