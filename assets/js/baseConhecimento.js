@@ -1,13 +1,24 @@
 
 var json;
 
+function preencheTabela(json) {
+    $('#tabela_anexos tr').remove();
+    for (i =0; i < json.length; i++) {
+        $('#tabela_anexos > tbody:last-child').append('<tr><td><a target="_blank" href="'+json[i].caminho+'">'+json[i].nome+'</a></td></tr>');
+    }
+}
 
 function mostraDados(node){
     if (node.id) {
         $('#html_topico').html(node.text);
         $.get("http://localhost:8080/api/informacoes/topico/" + node.id, function (data) {
             $('#html_informacao').html(data["data"][0].descricao);
-        });
+        })
+            .done(function (){
+                $.get("http://localhost:8080/api/anexos/topico/" + node.id, function (data) {
+                    preencheTabela(data);
+                })
+            });
     }
 }
 
