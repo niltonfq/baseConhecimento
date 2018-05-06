@@ -2,69 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Base de Conhecimento</title>
-
+    <title>Base de conhecimento</title>
     <link rel="stylesheet" href="assets/bootstrap-3.3.7-dist/css/bootstrap.css">
-
 </head>
 <body>
-<div class="container">
-    <h1>Categorias</h1>
-    <br>
+    <div class="container">
+        <h1>Menu</h1>
+        <br>
 
-    <div class="row">
-        <hr>
-
-        <div class="col-sm-4">
-            <div id="treeview12" class=""></div>
+        <div class="row">
+            <hr>
+            <div class="col-sm-4">
+                <h4><a target="_self" href="consulta.html">Consulta</a></h4>
+                <h4><a target="_self" href="categorias.html">Categorias</a></h4>
+            </div>
         </div>
-        <div class="col-sm-4">
-            <h4>Tópico</h4>
-            <div>
-                <textarea name="html_topico" id="html_topico" cols="80" rows="3"></textarea>
-            </div>
-            <h4>Informação</h4>
-            <div >
-                <textarea name="html_informacao" id="html_informacao" cols="80" rows="3"></textarea>
-            </div>
-
-            <div >
-                <table class="table table-hover" id="tabela_anexos">
-                    <thead>Anexos</thead>
-                    <tbody>
-                        <tr></tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-
     </div>
-    <br/>
-
-</div>
-<script src="./assets/js/jquery-3.3.1.min.js"></script>
-<script src="./assets/js/bootstrap-treeview.js"></script>
-<script src="./assets/js/baseConhecimento.js"></script>
-
-<script type="text/javascript">
-    $(function () {
-        $.get("http://localhost:8080/api/categorias", function (data) {
-            montaTreeview(data);
-        })
-        .done(function () {
-            var $tree = $('#treeview12').treeview({
-                data: json,
-                onNodeSelected: function(event, node) {
-                    mostraDados(node);
-                }
-            });
-        })
-        .fail(function () {
-            alert("error");
-        });
-    });
-</script>
-
 </body>
 </html>
