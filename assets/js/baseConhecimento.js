@@ -1,6 +1,26 @@
 
 var json;
 
+function montaGridCategorias(data) {
+
+    $('#grid tbody tr').remove();
+
+    for (i =0; i < data["data"].length; i++) {
+        $('#grid > tbody:last-child')
+            .append('<tr>'
+                +'<td>'+data["data"][i].id+'</td>'
+                +'<td>'+data["data"][i].nome+'</td>'
+                +'<td>'+data["data"][i].nomePai+'</td>'
+                +'<td><a href="" style="width: 58px" class="btn btn-xs btn-success btn_edit">Editar</a>'
+                +'&ensp;<a href="" style="width: 58px" class="btn btn-xs btn-danger">Excluir</a></td>'
+                +'</tr>');
+
+
+
+
+    }
+};
+
 function preencheTabela(json) {
     $('#tabela_anexos tr').remove();
     for (i =0; i < json.length; i++) {

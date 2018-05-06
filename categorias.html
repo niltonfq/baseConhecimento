@@ -23,15 +23,15 @@
                         <h4 class="box-title">Lista de Categorias</h4>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
-                        <table id="grid" class="table table-bordered table-striped">
+                    <div class="table-responsive">
+                        <table id="grid" class="table table-condensed table-hover">
                             <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>Percente à</th>
-                                <th>Ações</th>
-                            </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Percente à</th>
+                                    <th>Ações</th>
+                                </tr>
                             </thead>
                             <tbody>
                             </tbody>
@@ -79,6 +79,13 @@
                 }
             }
         } );
+
+        $(function () {
+            $.get("http://localhost:8080/api/categorias/listar", function (data) {
+                montaGridCategorias(data);
+            });
+        });
+
     </script>
 </body>
 </html>
