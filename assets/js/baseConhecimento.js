@@ -1,68 +1,34 @@
 
 var json;
 
-function montaGridCategorias(id_da_grid, inicializar) {
+function montaGridCategorias() {
     $.get("http://localhost:8080/api/categorias/listar", function (data) {
 
-        $('#'+id_da_grid+' tbody tr').remove();
+        $('#gridCategorias tbody tr').remove();
 
         for (i =0; i < data["data"].length; i++) {
-            $('#grid > tbody:last-child')
+            $('#gridCategorias > tbody:last-child')
                 .append('<tr>'
                     +'<td>'+data["data"][i].id+'</td>'
                     +'<td>'+data["data"][i].nome+'</td>'
                     +'<td>'+data["data"][i].nomePai+'</td>'
                     +'<td><a href="#" style="width: 58px" class="btn btn-xs btn-success btn_edit">Editar</a>'
                     +'&ensp;<a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger" '
-                    +'      onclick="excluirCategoria( confirm(\'Tem certeza que deseja excluir?\'),'+data["data"][i].id+',\''+id_da_grid+'\')">Excluir</a></td>'
+                    +'      onclick="excluirCategoria('+data["data"][i].id+'); montaGridCategorias();">Excluir</a></td>'
                     +'</tr>');
         }
-    })
-    .done(function (){
-        if (inicializar) {
-            $('#' + id_da_grid).DataTable({
-                "language": {
-                    "decimal": ",",
-                    "emptyTable": "Nenhum dado encontrado",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    "infoEmpty": "Mostrando 0 registros",
-                    "infoFiltered": "(filtrado de um total de _MAX_ registros)",
-                    "infoPostFix": "",
-                    "thousands": ".",
-                    "lengthMenu": "Mostrar _MENU_ registros",
-                    "loadingRecords": "Carregando...",
-                    "processing": "Processando...",
-                    "search": "Procurar:",
-                    "zeroRecords": "Nenhum registro encontrado",
-                    "paginate": {
-                        "first": "Primeiro",
-                        "last": "Último",
-                        "next": "Próximo",
-                        "previous": "Anterior"
-                    },
-                    "aria": {
-                        "sortAscending": ": activate to sort column ascending",
-                        "sortDescending": ": activate to sort column descending"
-                    }
-                }
-            });
-        }
     });
-
-
 };
 
-function excluirCategoria(confirmacao, id, id_da_grid) {
-    if (confirmacao) {
+function excluirCategoria(id) {
+    if (confirm('Tem certeza que deseja excluir?')) {
 
         var url = "http://localhost:8080/api/categorias/" + id;
 
         $.ajax({
             type: "DELETE",
             url: url,
-            success: function (data) {
-                montaGridCategorias(id_da_grid, false);
-            },
+            async: false,
             error: function (xhr, textStatus, errorThrown) {
                 alert("falha: Item não foi excluído");
             }
@@ -131,4 +97,33 @@ function montaNodes(data, gravaId) {
         }
     }
 };
+
+function configurarGrid(id_da_grid){
+    $('#' + id_da_grid).DataTable({
+        "language": {
+            "decimal": ",",
+            "emptyTable": "Nenhum dado encontrado",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 registros",
+            "infoFiltered": "(filtrado de um total de _MAX_ registros)",
+            "infoPostFix": "",
+            "thousands": ".",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "loadingRecords": "Carregando...",
+            "processing": "Processando...",
+            "search": "Procurar:",
+            "zeroRecords": "Nenhum registro encontrado",
+            "paginate": {
+                "first": "Primeiro",
+                "last": "Último",
+                "next": "Próximo",
+                "previous": "Anterior"
+            },
+            "aria": {
+                "sortAscending": ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            }
+        }
+    });
+}
 

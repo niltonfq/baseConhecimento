@@ -24,7 +24,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="grid" class="table table-bordered table-striped">
+                        <table id="gridCategorias" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -55,7 +55,8 @@
     <script>
 
         $(function () {
-            montaGridCategorias('grid', true);
+            montaGridCategorias();
+            configurarGrid('gridCategorias');
         });
 
     </script>
