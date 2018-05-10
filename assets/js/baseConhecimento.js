@@ -22,6 +22,10 @@ function montaGridCategorias() {
 };
 
 function excluirCategoria(id) {
+
+    $('#msgOk').hide();
+    $('#msgErro').hide();
+
     if (confirm('Tem certeza que deseja excluir?')) {
 
         var url = "http://localhost:8080/api/categorias/" + id;
@@ -30,8 +34,11 @@ function excluirCategoria(id) {
             type: "DELETE",
             url: url,
             async: false,
+            success: function () {
+                $('#msgOk').html('Registro excluído com sucesso!').show();
+            },
             error: function (xhr, textStatus, errorThrown) {
-                alert("falha: Item não foi excluído");
+                mostrarErros(xhr);
             }
         });
     }
@@ -128,3 +135,11 @@ function configurarGrid(id_da_grid){
     });
 }
 
+function mostrarErros(xhr) {
+    var texto = 'Operação não realizada!';
+    $.each(xhr.responseJSON.errors, function() {
+        texto += '<br>'+this;
+    });
+    $('#msgErro').html(texto).show();
+
+}

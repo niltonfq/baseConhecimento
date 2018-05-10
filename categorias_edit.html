@@ -15,6 +15,19 @@
             </ol>
         </section>
 
+        <div id="msgErro" class="alert alert-danger alert-dismissible" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-warning"></i> alerta</h4>
+
+        </div>
+
+        <div id="msgOk" class="alert alert-success alert-dismissible" style="display: none;">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-check"></i> Aviso</h4>
+
+        </div>
+
+
         <div class="col-md-12" style="margin-top: 10px">
 
             <div class="box box-primary">
@@ -48,18 +61,17 @@
         </div>
     </div>
     <script src="./assets/js/jquery-3.3.1.min.js"></script>
-    <script src="./assets/js/bootstrap-treeview.js"></script>
     <script src="./assets/js/baseConhecimento.js"></script>
     <script>
 
         var url = "http://localhost:8080/api/categorias";
 
-        $(function() {
-
-            $.getJSON(url+"/listar", function(result) {
+        function carregarCombo() {
+            $.getJSON(url + "/listar", function (result) {
+                $("#nomePai option").remove();
                 var $dropdown = $("#nomePai");
                 $dropdown.append($("<option />"));
-                $.each(result.data, function() {
+                $.each(result.data, function () {
                     $dropdown.append($("<option />").val(this.id).text(this.nome));
                 });
             })
@@ -76,6 +88,10 @@
                     }
                     localStorage.removeItem('idCategoria');
                 });
+        }
+
+        $(function() {
+            carregarCombo();
         });
 
         $("#form").submit(function(e) {
@@ -83,6 +99,9 @@
             $("#btn-save").prop("disabled", true);
 
             e.preventDefault();
+
+            $('#msgOk').hide();
+            $('#msgErro').hide();
 
             var data = {};
             data["id"] = $("#id").val();
@@ -95,16 +114,15 @@
                     contentType: "application/json",
                     url: url,
                     data: JSON.stringify(data),
-                    dataType: 'json',
                     timeout: 600000,
                     success: function (data) {
-                        limparCampos();
+                        $('#msgOk').html('Registro salvo com sucesso!').show();
+                        resetForm();
+                        carregarCombo();
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                        if (xhr.status != 201) {
-                            alert("falha na gravação");
-                        }
-                        limparCampos();
+                        mostrarErros(xhr);
+                        resetForm();
                     }
                 });
             } else {
@@ -116,22 +134,22 @@
                     dataType: 'json',
                     timeout: 600000,
                     success: function (data) {
+                        $('#msgOk').html('Registro salvo com sucesso!').show();
                         $("#btn-save").prop("disabled", false);
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                        if (xhr.status != 201) {
-                            alert("falha na gravação");
-                        }
+                        mostrarErros(xhr);
                         $("#btn-save").prop("disabled", false);
                     }
                 });
             }
         });
 
-        function limparCampos() {
+        function resetForm() {
             $("#btn-save").prop("disabled", false);
             $('#form')[0].reset();
         }
+
 
     </script>
 </body>
