@@ -11,6 +11,7 @@
         <section class="content-header">
             <ol class="breadcrumb">
                 <li><a href="index.html"> <i class="fa fa-home"></i> Home</a></li>
+                <li><a href="categorias.html"> <i class="fa fa-home"></i> Categorias</a></li>
             </ol>
         </section>
 
@@ -20,7 +21,7 @@
                 <form id="form" method="post">
                     <div class="box-body">
 
-                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="id" id="id" value="">
 
                         <div class="row">
                             <div class="form-group col-md-3">
@@ -53,12 +54,28 @@
 
         var url = "http://localhost:8080/api/categorias";
 
-        $.getJSON(url+"/listar", function(result) {
-            var $dropdown = $("#nomePai");
-            $dropdown.append($("<option />"));
-            $.each(result.data, function() {
-                $dropdown.append($("<option />").val(this.id).text(this.nome));
-            });
+        $(function() {
+
+            $.getJSON(url+"/listar", function(result) {
+                var $dropdown = $("#nomePai");
+                $dropdown.append($("<option />"));
+                $.each(result.data, function() {
+                    $dropdown.append($("<option />").val(this.id).text(this.nome));
+                });
+            })
+                .done(function () {
+                    var idPai = null;
+                    var id = localStorage.getItem('idCategoria');
+                    if (id != null) {
+                        $.getJSON(url + "/" + id, function (result) {
+                            $("#id").val(result.id);
+                            $("#nome").val(result.nome);
+
+                            $("#nomePai").val(result.pai);
+                        })
+                    }
+                    localStorage.removeItem('idCategoria');
+                });
         });
 
         $("#form").submit(function(e) {
@@ -68,32 +85,51 @@
             e.preventDefault();
 
             var data = {};
+            data["id"] = $("#id").val();
             data["nome"] = $("#nome").val();
             data["pai"] = $("#nomePai").val();
 
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: url,
-                data: JSON.stringify(data),
-                dataType: 'json',
-                timeout: 600000,
-                success: function (data) {
-                    $("#btn-save").prop("disabled", false);
-                    limparCampos();
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    if (xhr.status != 201) {
-                        alert("falha na gravação");
+            if (data["id"] == 0) {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: url,
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    timeout: 600000,
+                    success: function (data) {
+                        limparCampos();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        if (xhr.status != 201) {
+                            alert("falha na gravação");
+                        }
+                        limparCampos();
                     }
-                    $("#btn-save").prop("disabled", false);
-                    limparCampos();
-                }
-            });
-
+                });
+            } else {
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: url+'/'+data["id"],
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    timeout: 600000,
+                    success: function (data) {
+                        $("#btn-save").prop("disabled", false);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        if (xhr.status != 201) {
+                            alert("falha na gravação");
+                        }
+                        $("#btn-save").prop("disabled", false);
+                    }
+                });
+            }
         });
 
         function limparCampos() {
+            $("#btn-save").prop("disabled", false);
             $('#form')[0].reset();
         }
 

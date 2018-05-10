@@ -12,7 +12,8 @@ function montaGridCategorias() {
                     +'<td>'+data["data"][i].id+'</td>'
                     +'<td>'+data["data"][i].nome+'</td>'
                     +'<td>'+data["data"][i].nomePai+'</td>'
-                    +'<td><a href="#" style="width: 58px" class="btn btn-xs btn-success btn_edit">Editar</a>'
+                    +'<td><a href="categorias_edit.html" style="width: 58px" class="btn btn-xs btn-success btn_edit"'
+                    +'      onclick="localStorage.setItem(\'idCategoria\', '+data["data"][i].id+')">Editar</a>'
                     +'&ensp;<a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger" '
                     +'      onclick="excluirCategoria('+data["data"][i].id+'); montaGridCategorias();">Excluir</a></td>'
                     +'</tr>');
