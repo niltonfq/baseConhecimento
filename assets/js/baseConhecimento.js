@@ -11,8 +11,8 @@ function montaGridCategorias(data) {
                 +'<td>'+data["data"][i].id+'</td>'
                 +'<td>'+data["data"][i].nome+'</td>'
                 +'<td>'+data["data"][i].nomePai+'</td>'
-                +'<td><a href="" style="width: 58px" class="btn btn-xs btn-success btn_edit">Editar</a>'
-                +'&ensp;<a href="" style="width: 58px" class="btn btn-xs btn-danger">Excluir</a></td>'
+                +'<td><a href="#" style="width: 58px" class="btn btn-xs btn-success btn_edit">Editar</a>'
+                +'&ensp;<a href="#" id="btn-excluir" data-id=data["data"][i].id style="width: 58px" class="btn btn-xs btn-danger">Excluir</a></td>'
                 +'</tr>');
 
 
