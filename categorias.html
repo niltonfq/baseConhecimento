@@ -53,40 +53,10 @@
 
     <!-- page script -->
     <script>
-        $(function () {
-            $.get("http://localhost:8080/api/categorias/listar", function (data) {
-                montaGridCategorias(data);
-            })
-            .done(function (){
-                $('#grid').DataTable( {
-                    "language": {
-                        "decimal":        ",",
-                        "emptyTable":     "Nenhum dado encontrado",
-                        "info":           "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                        "infoEmpty":      "Mostrando 0 registros",
-                        "infoFiltered":   "(filtrado de um total de _MAX_ registros)",
-                        "infoPostFix":    "",
-                        "thousands":      ".",
-                        "lengthMenu":     "Mostrar _MENU_ registros",
-                        "loadingRecords": "Carregando...",
-                        "processing":     "Processando...",
-                        "search":         "Procurar:",
-                        "zeroRecords":    "Nenhum registro encontrado",
-                        "paginate": {
-                            "first":      "Primeiro",
-                            "last":       "Último",
-                            "next":       "Próximo",
-                            "previous":   "Anterior"
-                        },
-                        "aria": {
-                            "sortAscending":  ": activate to sort column ascending",
-                            "sortDescending": ": activate to sort column descending"
-                        }
-                    }
-                } );
-            });
-        });
 
+        $(function () {
+            montaGridCategorias('grid', true);
+        });
 
     </script>
 </body>

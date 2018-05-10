@@ -1,25 +1,74 @@
 
 var json;
 
-function montaGridCategorias(data) {
+function montaGridCategorias(id_da_grid, inicializar) {
+    $.get("http://localhost:8080/api/categorias/listar", function (data) {
 
-    $('#grid tbody tr').remove();
+        $('#'+id_da_grid+' tbody tr').remove();
 
-    for (i =0; i < data["data"].length; i++) {
-        $('#grid > tbody:last-child')
-            .append('<tr>'
-                +'<td>'+data["data"][i].id+'</td>'
-                +'<td>'+data["data"][i].nome+'</td>'
-                +'<td>'+data["data"][i].nomePai+'</td>'
-                +'<td><a href="#" style="width: 58px" class="btn btn-xs btn-success btn_edit">Editar</a>'
-                +'&ensp;<a href="#" id="btn-excluir" data-id=data["data"][i].id style="width: 58px" class="btn btn-xs btn-danger">Excluir</a></td>'
-                +'</tr>');
+        for (i =0; i < data["data"].length; i++) {
+            $('#grid > tbody:last-child')
+                .append('<tr>'
+                    +'<td>'+data["data"][i].id+'</td>'
+                    +'<td>'+data["data"][i].nome+'</td>'
+                    +'<td>'+data["data"][i].nomePai+'</td>'
+                    +'<td><a href="#" style="width: 58px" class="btn btn-xs btn-success btn_edit">Editar</a>'
+                    +'&ensp;<a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger" '
+                    +'      onclick="excluirCategoria( confirm(\'Tem certeza que deseja excluir?\'),'+data["data"][i].id+',\''+id_da_grid+'\')">Excluir</a></td>'
+                    +'</tr>');
+        }
+    })
+    .done(function (){
+        if (inicializar) {
+            $('#' + id_da_grid).DataTable({
+                "language": {
+                    "decimal": ",",
+                    "emptyTable": "Nenhum dado encontrado",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                    "infoEmpty": "Mostrando 0 registros",
+                    "infoFiltered": "(filtrado de um total de _MAX_ registros)",
+                    "infoPostFix": "",
+                    "thousands": ".",
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "loadingRecords": "Carregando...",
+                    "processing": "Processando...",
+                    "search": "Procurar:",
+                    "zeroRecords": "Nenhum registro encontrado",
+                    "paginate": {
+                        "first": "Primeiro",
+                        "last": "Último",
+                        "next": "Próximo",
+                        "previous": "Anterior"
+                    },
+                    "aria": {
+                        "sortAscending": ": activate to sort column ascending",
+                        "sortDescending": ": activate to sort column descending"
+                    }
+                }
+            });
+        }
+    });
 
 
-
-
-    }
 };
+
+function excluirCategoria(confirmacao, id, id_da_grid) {
+    if (confirmacao) {
+
+        var url = "http://localhost:8080/api/categorias/" + id;
+
+        $.ajax({
+            type: "DELETE",
+            url: url,
+            success: function (data) {
+                montaGridCategorias(id_da_grid, false);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert("falha: Item não foi excluído");
+            }
+        });
+    }
+}
 
 function preencheTabela(json) {
     $('#tabela_anexos tr').remove();
