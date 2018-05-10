@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categorias</title>
+    <link rel="stylesheet" href="assets/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <section class="content-header">
+            <ol class="breadcrumb">
+                <li><a href="index.html"> <i class="fa fa-home"></i> Home</a></li>
+            </ol>
+        </section>
+
+        <div class="col-md-12" style="margin-top: 10px">
+
+            <div class="box box-primary">
+                <form id="form" method="post">
+                    <div class="box-body">
+
+                        <input type="hidden" name="id" value="">
+
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="nome">Categoria</label>
+                                <input type="text" class="form-control" id="nome" name="nome" autofocus
+                                       required autocomplete="off" value="">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-9">
+                                <label for="nomePai">Pertence à</label>
+                                <select id="nomePai" name="nomePai">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <button style="width: 120px" type="submit" class="btn btn-primary pull-left" id="btn-save">
+                                <i class="fa fa-save"></i> Salvar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="./assets/js/jquery-3.3.1.min.js"></script>
+    <script src="./assets/js/bootstrap-treeview.js"></script>
+    <script src="./assets/js/baseConhecimento.js"></script>
+    <script>
+
+        var url = "http://localhost:8080/api/categorias";
+
+        $.getJSON(url+"/listar", function(result) {
+            var $dropdown = $("#nomePai");
+            $dropdown.append($("<option />"));
+            $.each(result.data, function() {
+                $dropdown.append($("<option />").val(this.id).text(this.nome));
+            });
+        });
+
+        $("#form").submit(function(e) {
+
+            $("#btn-save").prop("disabled", true);
+
+            e.preventDefault();
+
+            var data = {};
+            data["nome"] = $("#nome").val();
+            data["pai"] = $("#nomePai").val();
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: url,
+                data: JSON.stringify(data),
+                dataType: 'json',
+                timeout: 600000,
+                success: function (data) {
+                    $("#btn-save").prop("disabled", false);
+                    limparCampos();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    if (xhr.status != 201) {
+                        alert("falha na gravação");
+                    }
+                    $("#btn-save").prop("disabled", false);
+                    limparCampos();
+                }
+            });
+
+        });
+
+        function limparCampos() {
+            $('#form')[0].reset();
+        }
+
+    </script>
+</body>
+</html>
