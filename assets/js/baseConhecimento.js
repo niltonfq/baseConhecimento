@@ -4,19 +4,22 @@ var json;
 function montaGridCategorias() {
     $.get("http://localhost:8080/api/categorias/listar", function (data) {
 
-        $('#gridCategorias tbody tr').remove();
+        var table = $('#gridCategorias').DataTable();
+
+        table.rows().remove().draw();
 
         for (i =0; i < data["data"].length; i++) {
-            $('#gridCategorias > tbody:last-child')
-                .append('<tr>'
-                    +'<td>'+data["data"][i].id+'</td>'
-                    +'<td>'+data["data"][i].nome+'</td>'
-                    +'<td>'+data["data"][i].nomePai+'</td>'
-                    +'<td><a href="categorias_edit.html" style="width: 58px" class="btn btn-xs btn-success btn_edit"'
+
+            table.row.add( [
+                    data["data"][i].id,
+                    data["data"][i].nome,
+                    data["data"][i].nomePai,
+                    '<a href="categorias_edit.html" style="width: 58px" class="btn btn-xs btn-success btn_edit"'
                     +'      onclick="localStorage.setItem(\'idCategoria\', '+data["data"][i].id+')">Editar</a>'
                     +'&ensp;<a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger" '
-                    +'      onclick="excluirCategoria('+data["data"][i].id+'); montaGridCategorias();">Excluir</a></td>'
-                    +'</tr>');
+                    +'      onclick="excluirCategoria('+data["data"][i].id+'); montaGridCategorias();">Excluir</a>'
+                ] )
+                .draw();
         }
     });
 };
