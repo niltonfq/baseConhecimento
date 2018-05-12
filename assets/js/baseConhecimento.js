@@ -48,9 +48,17 @@ function excluirCategoria(id) {
 }
 
 function preencheTabela(json) {
+
     $('#tabela_anexos tr').remove();
     for (i =0; i < json.length; i++) {
-        $('#tabela_anexos > tbody:last-child').append('<tr><td><a target="_blank" href="'+json[i].caminho+'">'+json[i].nome+'</a></td></tr>');
+        $('#tabela_anexos > tbody:last-child')
+            .append('<tr>'
+                +'<td><a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger"'
+                +'onclick="excluirAnexo(\''+json[i].caminho.id+'\'); ">Excluir</a>'
+                +'</td>'
+                +'<td>'+json[i].nome+'</td>'
+                +'<td>'+json[i].caminho+'</td>'
+                +'</tr>');
     }
 }
 

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Base de Conhecimento</title>
+
+    <link rel="stylesheet" href="assets/bootstrap-3.3.7-dist/css/bootstrap.css">
+
+</head>
+<body>
+<div class="container">
+    <section class="content-header">
+        <ol class="breadcrumb">
+            <li><a href="index.html"> <i class="fa fa-home"></i> Home</a></li>
+        </ol>
+    </section>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Categorias</div>
+                <div class="panel-body">
+                    <div id="treeview12" class=""></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <form>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Tópico</div>
+                    <div class="panel-body">
+
+                        <div>
+                            <textarea name="html_topico" id="html_topico" style="width: 100%" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Informação</div>
+                    <div class="panel-body">
+                        <div >
+                            <textarea name="html_informacao" id="html_informacao" style="width: 100%" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Anexos</div>
+                    <div class="panel-body">
+                        <input type="file">
+                        <table class="table table-hover" id="tabela_anexos">
+                            <thead>
+                                <th>Ações</th>
+                                <th>Arquivo</th>
+                                <th>Nome</th>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Categorias</div>
+                    <div class="panel-body">
+                        <table class="table table-hover" id="tabela_categorias">
+                            <thead>
+                                <th>Ações</th>
+                                <th>Nome</th>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <input type="submit" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+    <br/>
+
+</div>
+<script src="./assets/js/jquery-3.3.1.min.js"></script>
+<script src="./assets/js/bootstrap-treeview.js"></script>
+<script src="./assets/js/baseConhecimento.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $.get("http://localhost:8080/api/categorias", function (data) {
+            montaTreeview(data);
+        })
+        .done(function () {
+            var $tree = $('#treeview12').treeview({
+                data: json,
+                onNodeSelected: function(event, node) {
+                    mostraDados(node);
+                }
+            });
+        })
+        .fail(function () {
+            alert("error");
+        });
+    });
+</script>
+
+</body>
+</html>
