@@ -47,22 +47,92 @@ function excluirCategoria(id) {
     }
 }
 
-function preencheTabela(json) {
 
-    $('#tabela_anexos tr').remove();
-    for (i =0; i < json.length; i++) {
-        $('#tabela_anexos > tbody:last-child')
-            .append('<tr>'
-                +'<td><a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger"'
-                +'onclick="excluirAnexo(\''+json[i].caminho.id+'\'); ">Excluir</a>'
-                +'</td>'
-                +'<td>'+json[i].nome+'</td>'
-                +'<td>'+json[i].caminho+'</td>'
-                +'</tr>');
+function excluirCategoriaTopico(id) {
+
+    $('#msgOk').hide();
+    $('#msgErro').hide();
+
+    if (confirm('Tem certeza que deseja excluir?')) {
+
+        var url = "http://localhost:8080/api/topico/categorias/" + id;
+
+        $.ajax({
+            type: "DELETE",
+            url: url,
+            async: false,
+            success: function () {
+                $('#msgOk').html('Registro excluído com sucesso!').show();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                mostrarErros(xhr);
+            }
+        });
     }
 }
 
-function mostraDados(node){
+
+function excluirAnexo(id) {
+
+    $('#msgOk').hide();
+    $('#msgErro').hide();
+
+    if (confirm('Tem certeza que deseja excluir?')) {
+
+        var url = "http://localhost:8080/api/anexo/" + id;
+
+        $.ajax({
+            type: "DELETE",
+            url: url,
+            async: false,
+            success: function () {
+                $('#msgOk').html('Registro excluído com sucesso!').show();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                mostrarErros(xhr);
+            }
+        });
+    }
+}
+
+function montaGridCategoriasTopico(id) {
+    $.get("http://localhost:8080/api/topicos/categorias/"+id, function (data) {
+
+        var table = $('#gridCategorias').DataTable();
+
+        table.rows().remove().draw();
+
+        for (i =0; i < data.length; i++) {
+
+            table.row.add( [
+                '<a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger" '
+                +'      onclick="excluirCategoriaTopico('+data[i].id+'); montaGridCategoriasTopico('+id+');">Excluir</a>',
+                data[i].nome
+            ] )
+                .draw();
+        }
+    });
+};
+
+function preencheTabela(json, edicao) {
+
+    $('#tabela_anexos tr').remove();
+    for (i =0; i < json.length; i++) {
+        if (edicao) {
+            $('#tabela_anexos > tbody:last-child')
+                .append('<tr>'
+                    + '<td><a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger"'
+                    + 'onclick="excluirAnexo(\'' + json[i].caminho.id + '\'); ">Excluir</a>'
+                    + '</td>'
+                    + '<td><a target="_blank" href="' + json[i].caminho + '">' + json[i].nome + '</a></td>'
+                    + '</tr>');
+        } else {
+            $('#tabela_anexos > tbody:last-child').append('<tr><td><a target="_blank" href="'+json[i].caminho+'">'+json[i].nome+'</a></td></tr>');
+        }
+    }
+}
+
+function mostraDados(node, edicao){
     if (node.id) {
         $('#html_topico').html(node.text);
         $.get("http://localhost:8080/api/informacoes/topico/" + node.id, function (data) {
@@ -70,7 +140,9 @@ function mostraDados(node){
         })
             .done(function (){
                 $.get("http://localhost:8080/api/anexos/topico/" + node.id, function (data) {
-                    preencheTabela(data);
+                    preencheTabela(data, edicao);
+                }).done(function () {
+                    montaGridCategoriasTopico(node.id);
                 })
             });
     }

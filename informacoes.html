@@ -51,7 +51,6 @@
                         <table class="table table-hover" id="tabela_anexos">
                             <thead>
                                 <th>Ações</th>
-                                <th>Arquivo</th>
                                 <th>Nome</th>
                             </thead>
                             <tbody>
@@ -62,13 +61,16 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Categorias</div>
                     <div class="panel-body">
-                        <table class="table table-hover" id="tabela_categorias">
+                        <table id="gridCategorias" class="table table-bordered table-striped">
                             <thead>
+                            <tr>
                                 <th>Ações</th>
                                 <th>Nome</th>
+                            </tr>
                             </thead>
                             <tbody>
                             </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -83,9 +85,13 @@
 <script src="./assets/js/jquery-3.3.1.min.js"></script>
 <script src="./assets/js/bootstrap-treeview.js"></script>
 <script src="./assets/js/baseConhecimento.js"></script>
+<!-- DataTables -->
+<script src="assets/components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="assets/components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
 <script type="text/javascript">
     $(function () {
+
         $.get("http://localhost:8080/api/categorias", function (data) {
             montaTreeview(data);
         })
@@ -93,7 +99,7 @@
             var $tree = $('#treeview12').treeview({
                 data: json,
                 onNodeSelected: function(event, node) {
-                    mostraDados(node);
+                    mostraDados(node, true);
                 }
             });
         })
