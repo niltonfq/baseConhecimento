@@ -48,14 +48,14 @@ function excluirCategoria(id) {
 }
 
 
-function excluirCategoriaTopico(id) {
+function excluirCategoriaTopico(id, idcategoria) {
 
     $('#msgOk').hide();
     $('#msgErro').hide();
 
     if (confirm('Tem certeza que deseja excluir?')) {
 
-        var url = "http://localhost:8080/api/topico/categorias/" + id;
+        var url = "http://localhost:8080/api/topicos/"+id+"/categorias/" + idcategoria;
 
         $.ajax({
             type: "DELETE",
@@ -71,6 +71,18 @@ function excluirCategoriaTopico(id) {
     }
 }
 
+function carregarComboCategorias() {
+
+    var url = "http://localhost:8080/api/categorias";
+
+    $.getJSON(url + "/listar", function (result) {
+        $("#cmbCategorias option").remove();
+        var $dropdown = $("#cmbCategorias");
+        $.each(result.data, function () {
+            $dropdown.append($("<option />").val(this.id).text(this.nome));
+        });
+    });
+}
 
 function excluirAnexo(id) {
 
@@ -106,7 +118,7 @@ function montaGridCategoriasTopico(id) {
 
             table.row.add( [
                 '<a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger" '
-                +'      onclick="excluirCategoriaTopico('+data[i].id+'); montaGridCategoriasTopico('+id+');">Excluir</a>',
+                +'      onclick="excluirCategoriaTopico('+id+','+data[i].id+'); montaGridCategoriasTopico('+id+');">Excluir</a>',
                 data[i].nome
             ] )
                 .draw();
@@ -139,12 +151,17 @@ function mostraDados(node, edicao){
             $('#html_informacao').html(data["data"][0].descricao);
         })
             .done(function (){
+                if (edicao){
+                    $("#divCmbCategoria").show();
+                }
                 $.get("http://localhost:8080/api/anexos/topico/" + node.id, function (data) {
                     preencheTabela(data, edicao);
                 }).done(function () {
                     montaGridCategoriasTopico(node.id);
                 })
             });
+    } else {
+        $("#divCmbCategoria").hide();
     }
 }
 

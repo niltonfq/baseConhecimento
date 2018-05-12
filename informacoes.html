@@ -47,7 +47,18 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Anexos</div>
                     <div class="panel-body">
-                        <input type="file">
+                        <div>
+                            <form method="POST" enctype="multipart/form-data" action="/">
+                                <table>
+                                    <tr>
+                                        <td><input type="file" name="file" /></td>
+                                        <td>&ensp;<input type="submit" value="Upload" class="btn-sm btn btn-primary"/></td>
+                                    </tr>
+
+                                </table>
+                            </form>
+                        </div>
+
                         <table class="table table-hover" id="tabela_anexos">
                             <thead>
                                 <th>Ações</th>
@@ -61,6 +72,13 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Categorias</div>
                     <div class="panel-body">
+                        <div id="divCmbCategoria" style="display: none">
+                            <select id="cmbCategorias" name="cmbCategorias" style="width: 50%">
+                            </select>
+                            <a href="" class="btn btn-primary btn-sm">Adicionar</a>
+                            <br>
+                            <br>
+                        </div>
                         <table id="gridCategorias" class="table table-bordered table-striped">
                             <thead>
                             <tr>
@@ -92,6 +110,9 @@
 <script type="text/javascript">
     $(function () {
 
+        carregarComboCategorias();
+        configurarGrid();
+
         $.get("http://localhost:8080/api/categorias", function (data) {
             montaTreeview(data);
         })
@@ -107,6 +128,38 @@
             alert("error");
         });
     });
+
+    function configurarGrid(){
+        $('#gridCategorias').DataTable({
+            searching: false,
+            paging: false,
+            "language": {
+                "decimal": ",",
+                "emptyTable": "Nenhum dado encontrado",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                "infoEmpty": "Mostrando 0 registros",
+                "infoFiltered": "(filtrado de um total de _MAX_ registros)",
+                "infoPostFix": "",
+                "thousands": ".",
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "loadingRecords": "Carregando...",
+                "processing": "Processando...",
+                "search": "Procurar:",
+                "zeroRecords": "Nenhum registro encontrado",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Último",
+                    "next": "Próximo",
+                    "previous": "Anterior"
+                },
+                "aria": {
+                    "sortAscending": ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                }
+            }
+        });
+    }
+
 </script>
 
 </body>
