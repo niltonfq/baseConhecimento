@@ -153,6 +153,7 @@ function mostraDados(node, edicao){
             .done(function (){
                 if (edicao){
                     $("#divCmbCategoria").show();
+                    $("#divAnexos").show();
                 }
                 $.get("http://localhost:8080/api/anexos/topico/" + node.id, function (data) {
                     preencheTabela(data, edicao);
@@ -162,6 +163,7 @@ function mostraDados(node, edicao){
             });
     } else {
         $("#divCmbCategoria").hide();
+        $("#divAnexos").hide();
     }
 }
 

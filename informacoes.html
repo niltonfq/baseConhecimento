@@ -44,57 +44,59 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Anexos</div>
-                    <div class="panel-body">
-                        <div>
-                            <form method="POST" enctype="multipart/form-data" action="/">
-                                <table>
-                                    <tr>
-                                        <td><input type="file" name="file" /></td>
-                                        <td>&ensp;<input type="submit" value="Upload" class="btn-sm btn btn-primary"/></td>
-                                    </tr>
 
-                                </table>
-                            </form>
-                        </div>
-
-                        <table class="table table-hover" id="tabela_anexos">
-                            <thead>
-                                <th>Ações</th>
-                                <th>Nome</th>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Categorias</div>
-                    <div class="panel-body">
-                        <div id="divCmbCategoria" style="display: none">
-                            <select id="cmbCategorias" name="cmbCategorias" style="width: 50%">
-                            </select>
-                            <a href="" class="btn btn-primary btn-sm">Adicionar</a>
-                            <br>
-                            <br>
-                        </div>
-                        <table id="gridCategorias" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Ações</th>
-                                <th>Nome</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-
-                        </table>
-                    </div>
-                </div>
-
-                <input type="submit" class="btn btn-primary">
+                <input type="submit" class="btn btn-primary" value="Salvar">
             </form>
+            <br>
+            <div class="panel panel-default">
+                <div class="panel-heading">Anexos</div>
+                <div class="panel-body">
+                    <div id="divAnexos" style="display: none">
+                        <form method="POST" enctype="multipart/form-data" action="/">
+                            <table>
+                                <tr>
+                                    <td><input type="file" name="file" /></td>
+                                    <td>&ensp;<input type="submit" value="Upload" class="btn-sm btn btn-primary"/></td>
+                                </tr>
+
+                            </table>
+                        </form>
+                    </div>
+
+                    <table class="table table-hover" id="tabela_anexos">
+                        <thead>
+                            <th>Ações</th>
+                            <th>Nome</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Categorias</div>
+                <div class="panel-body">
+                    <div id="divCmbCategoria" style="display: none">
+                        <select id="cmbCategorias" name="cmbCategorias" style="width: 50%">
+                        </select>
+                        <a href="" class="btn btn-primary btn-sm">Adicionar</a>
+                        <br>
+                        <br>
+                    </div>
+                    <table id="gridCategorias" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Ações</th>
+                            <th>Nome</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
     <br/>
