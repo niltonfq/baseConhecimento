@@ -38,82 +38,90 @@
                 <h4><i class="icon fa fa-check"></i> Aviso</h4>
 
             </div>
+            <div id="info" style="display: none">
+                <li id="html_categoriaSelecionada" class="list-group-item node-treeview12 node-selected" data-nodeid="6" style="color:#FFFFFF;background-color:#428bca;">
+                    <span class="indent"></span><span class="indent"></span><span class="indent"></span>
+                    <span class="icon glyphicon"></span><span class="icon node-icon"></span>
+                </li>
+                <br>
+                <form id="form">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tópico</div>
+                        <div class="panel-body">
 
-            <form id="form">
+                            <div>
+
+                                <input type="text" id="html_idCategoriaSelecionada" value="">
+                                <input type="text" id="html_idTopico" value="">
+                                <textarea readonly id="html_topico" style="width: 100%" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Informação</div>
+                        <div class="panel-body">
+                            <div >
+                                <input type="hidden" id="html_idInformacao" value="">
+                                <textarea id="html_informacao" style="width: 100%" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input id="btnSubmit" type="submit" class="btn btn-primary" value="Salvar">
+                </form>
+                <br>
                 <div class="panel panel-default">
-                    <div class="panel-heading">Tópico</div>
+                    <div class="panel-heading">Anexos</div>
                     <div class="panel-body">
+                        <div id="divAnexos" style="display: none">
+                            <form id="formAnexo" method="POST" enctype="multipart/form-data" action="/">
+                                <table>
+                                    <tr>
+                                        <td><input type="file" name="file" required/></td>
+                                        <td>&ensp;<input type="submit" value="Upload" class="btn-sm btn btn-primary"/></td>
+                                    </tr>
 
-                        <div>
-                            <input type="hidden" id="html_idTopico" value="">
-                            <textarea readonly id="html_topico" style="width: 100%" rows="2"></textarea>
+                                </table>
+                            </form>
+
+
+                            <table class="table table-hover" id="tabela_anexos">
+                                <thead>
+                                    <th>Ações</th>
+                                    <th>Nome</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading">Informação</div>
+                    <div class="panel-heading">Categorias</div>
                     <div class="panel-body">
-                        <div >
-                            <input type="hidden" id="html_idInformacao" value="">
-                            <textarea id="html_informacao" style="width: 100%" rows="4"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <input id="btnSubmit" type="submit" class="btn btn-primary" value="Salvar">
-            </form>
-            <br>
-            <div class="panel panel-default">
-                <div class="panel-heading">Anexos</div>
-                <div class="panel-body">
-                    <div id="divAnexos" style="display: none">
-                        <form id="formAnexo" method="POST" enctype="multipart/form-data" action="/">
-                            <table>
+                        <div id="divCmbCategoria" style="display: none">
+                            <form id="formCategoria">
+                                <select id="cmbCategorias" name="cmbCategorias" style="width: 50%">
+                                </select>
+                                <input type="submit" value="Adicionar" class="btn-sm btn btn-primary"/>
+                                <br>
+                                <br>
+                            </form>
+                            <table id="gridCategorias" class="table table-bordered table-striped">
+                                <thead>
                                 <tr>
-                                    <td><input type="file" name="file" required/></td>
-                                    <td>&ensp;<input type="submit" value="Upload" class="btn-sm btn btn-primary"/></td>
+                                    <th>Ações</th>
+                                    <th>Nome</th>
                                 </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
 
                             </table>
-                        </form>
-
-
-                        <table class="table table-hover" id="tabela_anexos">
-                            <thead>
-                                <th>Ações</th>
-                                <th>Nome</th>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">Categorias</div>
-                <div class="panel-body">
-                    <div id="divCmbCategoria" style="display: none">
-                        <select id="cmbCategorias" name="cmbCategorias" style="width: 50%">
-                        </select>
-                        <a href="" class="btn btn-primary btn-sm">Adicionar</a>
-                        <br>
-                        <br>
-
-                        <table id="gridCategorias" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Ações</th>
-                                <th>Nome</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-
-                        </table>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
     <br/>

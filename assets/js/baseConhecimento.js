@@ -2,6 +2,52 @@
 var json;
 var url = "http://localhost:8080/api/";
 
+
+$("#formCategoria").submit(function(e) {
+    $('#msgOk').hide();
+    $('#msgErro').hide();
+    e.preventDefault();
+
+    $("#btnSubmit").prop("disabled", true);
+
+    var data = {};
+    data["id"] = $("#html_idInformacao").val();
+    data["descricao"] = $("#html_informacao").val();
+
+    if (data["id"] == 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: url+"informacoes",
+            data: JSON.stringify(data),
+            timeout: 600000,
+            success: function (data) {
+                $('#msgOk').html('Registro salvo com sucesso!').show();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                mostrarErros(xhr);
+            }
+        });
+    } else {
+
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: url+"informacoes/" + $("#html_idInformacao").val(),
+            data: JSON.stringify(data),
+            timeout: 600000,
+            success: function (data) {
+                $('#msgOk').html('Registro atualizado com sucesso!').show();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                mostrarErros(xhr);
+            }
+        });
+    }
+    $("#btnSubmit").prop("disabled", false);
+
+})
+
 $("#form").submit(function(e) {
     $('#msgOk').hide();
     $('#msgErro').hide();
@@ -191,14 +237,20 @@ function preencheTabela(json, edicao) {
 function mostraDados(node, edicao){
 
     if (node.id) {
+
         $('#html_topico').html(node.text);
         $('#html_idTopico').val(node.id);
+        $('#html_idCategoriaSelecionada').val(node.pai);
+
+        var texto = $('[data-nodeid="'+node.parentId+'"]')[0].innerText;
+        $('#html_categoriaSelecionada').html(texto);
 
         $.get("http://localhost:8080/api/informacoes/topico/" + node.id, function (data) {
             $('#html_informacao').html(data["data"][0].descricao);
             $('#html_idInformacao').val(data["data"][0].id);
         })
             .done(function (){
+                $("#info").show();
                 if (edicao){
                     $("#divCmbCategoria").show();
                     $("#divAnexos").show();
@@ -210,6 +262,7 @@ function mostraDados(node, edicao){
                 })
             });
     } else {
+        $("#info").hide();
         $("#divCmbCategoria").hide();
         $("#divAnexos").hide();
     }
@@ -240,9 +293,10 @@ function montaNodes(data, gravaId) {
             var i;
             for (i = 0; i < data.length; i++) {
 
-                json += '"text": "' + data[i].nome + '"';
+                json += '"text": "' + data[i].nome+"-"+data[i].pai + '"';
                 if (gravaId) {
                     json += ',"id": "' + data[i].id + '"';
+                    json += ',"pai": "' + data[i].pai + '"';
                 }
                 montaNodes(data[i].itens, false);
                 montaNodes(data[i].topicos, true);
