@@ -43,7 +43,8 @@
                     <span class="indent"></span><span class="indent"></span><span class="indent"></span>
                     <span class="icon glyphicon"></span><span class="icon node-icon"></span>
                 </li>
-                <br>
+                <a id="btn_novo" onclick="limparCampos()" href="#" style="padding-top: 12px;margin-right: 2px;"
+                   class="btn btn-success pull-right">Novo</a>
                 <form id="form">
                     <div class="panel panel-default">
                         <div class="panel-heading">Tópico</div>
@@ -52,8 +53,8 @@
                             <div>
 
                                 <input type="text" id="html_idCategoriaSelecionada" value="">
-                                <input type="text" id="html_idTopico" value="">
-                                <textarea readonly id="html_topico" style="width: 100%" rows="2"></textarea>
+                                <input type="text" id="html_idTopico" value="0">
+                                <textarea name="html_topico" id="html_topico" required style="width: 100%" rows="2"></textarea>
                             </div>
                         </div>
                     </div>
@@ -62,7 +63,7 @@
                         <div class="panel-body">
                             <div >
                                 <input type="hidden" id="html_idInformacao" value="">
-                                <textarea id="html_informacao" style="width: 100%" rows="4"></textarea>
+                                <textarea name="html_informacao" id="html_informacao" required style="width: 100%" rows="4"></textarea>
                             </div>
                         </div>
                     </div>
@@ -70,10 +71,10 @@
                     <input id="btnSubmit" type="submit" class="btn btn-primary" value="Salvar">
                 </form>
                 <br>
-                <div class="panel panel-default">
+                <div class="panel panel-default" id="html_divAnexos">
                     <div class="panel-heading">Anexos</div>
                     <div class="panel-body">
-                        <div id="divAnexos" style="display: none">
+                        <div id="divAnexos">
                             <form id="formAnexo" method="POST" enctype="multipart/form-data" action="/">
                                 <table>
                                     <tr>
@@ -96,10 +97,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
+                <div class="panel panel-default" id="html_divCategorias">
                     <div class="panel-heading">Categorias</div>
                     <div class="panel-body">
-                        <div id="divCmbCategoria" style="display: none">
+                        <div id="divCmbCategoria">
                             <form id="formCategoria">
                                 <select id="cmbCategorias" name="cmbCategorias" style="width: 50%">
                                 </select>
@@ -141,20 +142,8 @@
         carregarComboCategorias();
         configurarGrid();
 
-        $.get("http://localhost:8080/api/categorias", function (data) {
-            montaTreeview(data);
-        })
-        .done(function () {
-            var $tree = $('#treeview12').treeview({
-                data: json,
-                onNodeSelected: function(event, node) {
-                    mostraDados(node, true);
-                }
-            });
-        })
-        .fail(function () {
-            alert("error");
-        });
+        carregarTreeview();
+
     });
 
     function configurarGrid(){
