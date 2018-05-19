@@ -137,11 +137,9 @@ function excluirAnexo(id) {
 
     if (confirm('Tem certeza que deseja excluir?')) {
 
-        var url = "http://localhost:8080/api/anexo/" + id;
-
         $.ajax({
             type: "DELETE",
-            url: url,
+            url: url+"anexos/" + id,
             async: false,
             success: function () {
                 $('#msgOk').html('Registro excluído com sucesso!').show();
@@ -180,7 +178,7 @@ function preencheTabela(json, edicao) {
             $('#tabela_anexos > tbody:last-child')
                 .append('<tr>'
                     + '<td><a href="#" id="btn-excluir" style="width: 58px" class="btn btn-xs btn-danger"'
-                    + 'onclick="excluirAnexo(\'' + json[i].caminho.id + '\'); ">Excluir</a>'
+                    + 'onclick="excluirAnexo(\'' + json[i].id + '\'); ">Excluir</a>'
                     + '</td>'
                     + '<td><a target="_blank" href="' + json[i].caminho + '">' + json[i].nome + '</a></td>'
                     + '</tr>');
@@ -289,9 +287,20 @@ function configurarGrid(id_da_grid){
 
 function mostrarErros(xhr) {
     var texto = 'Operação não realizada!';
-    $.each(xhr.responseJSON.errors, function() {
-        texto += '<br>'+this;
-    });
+
+    if (xhr.responseJSON) {
+        if (xhr.responseJSON.errors) {
+            $.each(xhr.responseJSON.errors, function () {
+                texto += '<br>' + this;
+            });
+        }
+        if (xhr.responseJSON.message) {
+            texto += '<br>' + xhr.responseJSON.message;
+        }
+    }
+    else {
+        texto += '<br>' + xhr.statusText;
+    }
     $('#msgErro').html(texto).show();
 
 }
