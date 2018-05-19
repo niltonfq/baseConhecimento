@@ -26,13 +26,27 @@
         </div>
 
         <div class="col-sm-6">
-            <form>
+
+            <div id="msgErro" class="alert alert-danger alert-dismissible" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-warning"></i> alerta</h4>
+
+            </div>
+
+            <div id="msgOk" class="alert alert-success alert-dismissible" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> Aviso</h4>
+
+            </div>
+
+            <form id="form">
                 <div class="panel panel-default">
                     <div class="panel-heading">Tópico</div>
                     <div class="panel-body">
 
                         <div>
-                            <textarea name="html_topico" id="html_topico" style="width: 100%" rows="2"></textarea>
+                            <input type="hidden" id="html_idTopico" value="">
+                            <textarea readonly id="html_topico" style="width: 100%" rows="2"></textarea>
                         </div>
                     </div>
                 </div>
@@ -40,12 +54,13 @@
                     <div class="panel-heading">Informação</div>
                     <div class="panel-body">
                         <div >
-                            <textarea name="html_informacao" id="html_informacao" style="width: 100%" rows="2"></textarea>
+                            <input type="hidden" id="html_idInformacao" value="">
+                            <textarea id="html_informacao" style="width: 100%" rows="4"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <input type="submit" class="btn btn-primary" value="Salvar">
+                <input id="btnSubmit" type="submit" class="btn btn-primary" value="Salvar">
             </form>
             <br>
             <div class="panel panel-default">
@@ -61,16 +76,17 @@
 
                             </table>
                         </form>
-                    </div>
 
-                    <table class="table table-hover" id="tabela_anexos">
-                        <thead>
-                            <th>Ações</th>
-                            <th>Nome</th>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+
+                        <table class="table table-hover" id="tabela_anexos">
+                            <thead>
+                                <th>Ações</th>
+                                <th>Nome</th>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -82,18 +98,19 @@
                         <a href="" class="btn btn-primary btn-sm">Adicionar</a>
                         <br>
                         <br>
-                    </div>
-                    <table id="gridCategorias" class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                            <th>Ações</th>
-                            <th>Nome</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
 
-                    </table>
+                        <table id="gridCategorias" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Ações</th>
+                                <th>Nome</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -110,6 +127,7 @@
 <script src="assets/components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
 <script type="text/javascript">
+
     $(function () {
 
         carregarComboCategorias();

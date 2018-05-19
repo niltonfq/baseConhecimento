@@ -1,5 +1,51 @@
 
 var json;
+var url = "http://localhost:8080/api/";
+
+$("#form").submit(function(e) {
+    $('#msgOk').hide();
+    $('#msgErro').hide();
+    e.preventDefault();
+
+    $("#btnSubmit").prop("disabled", true);
+
+    var data = {};
+    data["id"] = $("#html_idInformacao").val();
+    data["descricao"] = $("#html_informacao").val();
+
+    if (data["id"] == 0) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: url+"informacoes",
+            data: JSON.stringify(data),
+            timeout: 600000,
+            success: function (data) {
+                $('#msgOk').html('Registro salvo com sucesso!').show();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                mostrarErros(xhr);
+            }
+        });
+    } else {
+
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: url+"informacoes/" + $("#html_idInformacao").val(),
+            data: JSON.stringify(data),
+            timeout: 600000,
+            success: function (data) {
+                $('#msgOk').html('Registro atualizado com sucesso!').show();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                mostrarErros(xhr);
+            }
+        });
+    }
+    $("#btnSubmit").prop("disabled", false);
+
+})
 
 function montaGridCategorias() {
     $.get("http://localhost:8080/api/categorias/listar", function (data) {
@@ -145,10 +191,14 @@ function preencheTabela(json, edicao) {
 }
 
 function mostraDados(node, edicao){
+
     if (node.id) {
         $('#html_topico').html(node.text);
+        $('#html_idTopico').val(node.id);
+
         $.get("http://localhost:8080/api/informacoes/topico/" + node.id, function (data) {
             $('#html_informacao').html(data["data"][0].descricao);
+            $('#html_idInformacao').val(data["data"][0].id);
         })
             .done(function (){
                 if (edicao){
