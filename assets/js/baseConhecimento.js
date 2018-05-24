@@ -8,43 +8,31 @@ $("#formCategoria").submit(function(e) {
     $('#msgErro').hide();
     e.preventDefault();
 
-    $("#btnSubmit").prop("disabled", true);
+    $("#html_btn_addCategoria").prop("disabled", true);
 
     var data = {};
-    data["id"] = $("#html_idInformacao").val();
-    data["descricao"] = $("#html_informacao").val();
+    data["categoria"] = {};
+    data["categoria"]["id"] = $("#cmbCategorias").val();
+    data["topico"] = {};
+    data["topico"]["id"] = $("#html_idTopico").val();
 
-    if (data["id"] == 0) {
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: url+"informacoes",
-            data: JSON.stringify(data),
-            timeout: 600000,
-            success: function (data) {
-                $('#msgOk').html('Registro salvo com sucesso!').show();
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                mostrarErros(xhr);
-            }
-        });
-    } else {
 
-        $.ajax({
-            type: "PUT",
-            contentType: "application/json",
-            url: url+"informacoes/" + $("#html_idInformacao").val(),
-            data: JSON.stringify(data),
-            timeout: 600000,
-            success: function (data) {
-                $('#msgOk').html('Registro atualizado com sucesso!').show();
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                mostrarErros(xhr);
-            }
-        });
-    }
-    $("#btnSubmit").prop("disabled", false);
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: url+"topicos/categoria",
+        data: JSON.stringify(data),
+        timeout: 600000,
+        success: function (data) {
+            $('#msgOk').html('Registro salvo com sucesso!').show();
+            montaGridCategoriasTopico($("#html_idTopico").val());
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            mostrarErros(xhr);
+        }
+    });
+
+    $("#html_btn_addCategoria").prop("disabled", false);
 
 })
 
@@ -243,7 +231,7 @@ function preencheTabela(json, edicao) {
 function mostraDivs(){
 
     var id = $("#html_idTopico").val();
-    if (id != 0) {
+    if (id) {
         $("#html_divAnexos").show();
         $("#html_divCategorias").show();
     } else {
@@ -277,7 +265,7 @@ function mostraDados(node, edicao){
             })
         });
     } else {
-        $('#html_idTopico').val(0);
+        $('#html_idTopico').val(undefined);
         $("#html_idInformacao").val(0)
         $('#html_idCategoriaSelecionada').val(node.idCategoria);
         $('#html_topico').val("");
@@ -398,7 +386,7 @@ function carregarTreeview() {
 
 function limparCampos() {
     $("#html_topico").val("");
-    $("#html_idTopico").val("");
+    $("#html_idTopico").val(undefined);
     $("#html_informacao").val("");
     $("#html_idInformacao").val("");
 
